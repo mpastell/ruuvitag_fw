@@ -7,15 +7,15 @@
 #define APPLICATION_DEVICE_NAME_LENGTH  5                               /**< number of characters in above string, excluding null */
 #define APP_DEVICE_NAME                 APPLICATION_DEVICE_NAME         /**< TODO: Refactoring **/
 #define APP_DEVICE_NAME_LENGTH          APPLICATION_DEVICE_NAME_LENGTH
-#define APPLICATION_ADV_INTERVAL        1010                            /**< ms. Use value which is not exactly divisible by 1000 ms to be seen by gateways which have limited scan windows in second divisible intervals. **/
+#define APPLICATION_ADV_INTERVAL        1000                            /**< ms. Use value which is not exactly divisible by 1000 ms to be seen by gateways which have limited scan windows in second divisible intervals. **/
 #define APP_TX_POWER                    4                               /**< dBm **/
 #define INIT_FWREV                      "2.4.2"                         /**< Github tag. Do not include specifiers such as "alpha" so you can accept ready binaries as they are **/
 #define INIT_SWREV                      INIT_FWREV                      /**< FW and SW are same thing in this context **/                             
 
 // milliseconds until main loop timer function is called. Other timers can bring
 // application out of sleep at higher (or lower) interval.
-#define MAIN_LOOP_INTERVAL_RAW        2010u
-#define ADVERTISING_INTERVAL_RAW      2010u
+#define MAIN_LOOP_INTERVAL_RAW        200u
+#define ADVERTISING_INTERVAL_RAW      1000u
 #define MAIN_LOOP_INTERVAL_RAW_SLOW   6010u
 #define ADVERTISING_INTERVAL_RAW_SLOW 6010u
 #define ADVERTISING_STARTUP_PERIOD    5000u // milliseconds app advertises at startup speed.
@@ -23,7 +23,7 @@
 
 //Raw v2
 #define RAWv1_DATA_LENGTH 14
-#define RAWv2_DATA_LENGTH 24
+#define RAWv2_DATA_LENGTH 31
 
 /**
  *  BLE_GAP_ADV_TYPE_ADV_IND          0x00   Connectable, scannable

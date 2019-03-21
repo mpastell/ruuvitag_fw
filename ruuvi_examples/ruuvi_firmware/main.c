@@ -108,6 +108,7 @@ static volatile uint16_t vbat = 0; //Update in interrupt after radio activity.
 static uint64_t last_battery_measurement = 0; // Timestamp of VBat update.
 static ruuvi_sensor_t data;
 static uint8_t advertisement_delay = 0; //Random, static delay to reduce collisions.
+static uint8_t sample_count = 0; // Counter for sampling / advertising packet
 
 // Possible modes of the app
 #define RAWv1 0
@@ -401,20 +402,36 @@ static void main_sensor_task(void* p_data, uint16_t length)
   environmental.humidity = raw_h;
   environmental.pressure = raw_p;
 
-  switch(tag_mode)
-  {
-    case RAWv2_FAST:
-    case RAWv2_SLOW:
-      encodeToRawFormat5(data_buffer, &environmental, &buffer.sensor, acceleration_events, vbat, BLE_TX_POWER);
-      break;
-    
-    case RAWv1:
-    default:
-      encodeToSensorDataFormat(data_buffer, &data);
-      break;
-  }
+  //switch(tag_mode)
+  //{
+  // case RAWv2_FAST:
+  //  case RAWv2_SLOW:
+  //    encodeToRawFormat5(data_buffer, &environmental, &buffer.sensor, acceleration_events, vbat, BLE_TX_POWER);
+  //    break;
+  //  
+  //  case RAWv1:
+  //  default:
+  //    encodeToSensorDataFormat(data_buffer, &data);
+  //    break;
+  //}
 
-  updateAdvertisement();
+  //Write accelerometer data to buffer -> 5 samples fit to advertising data
+  data_buffer[sample_count*6 + 1] = (buffer.sensor.x)>>8;
+  data_buffer[sample_count*6 + 2] = (buffer.sensor.x)&0xFF;
+  data_buffer[sample_count*6 + 3] = (buffer.sensor.y)>>8;
+  data_buffer[sample_count*6 + 4] = (buffer.sensor.y)&0xFF;
+  data_buffer[sample_count*6 + 5] = (buffer.sensor.z)>>8;
+  data_buffer[sample_count*6 + 6] = (buffer.sensor.z)&0xFF;
+
+  sample_count++;
+  
+  if (sample_count == 5)
+  {
+    data_buffer[0] = sample_count; //Check that submission is every 5 samples
+    updateAdvertisement();
+    sample_count = 0;
+  }
+  
   watchdog_feed();
 }
 
