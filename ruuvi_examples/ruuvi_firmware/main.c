@@ -416,18 +416,18 @@ static void main_sensor_task(void* p_data, uint16_t length)
   //}
 
   //Write accelerometer data to buffer -> 5 samples fit to advertising data
-  data_buffer[sample_count*6 + 1] = (buffer.sensor.x)>>8;
-  data_buffer[sample_count*6 + 2] = (buffer.sensor.x)&0xFF;
-  data_buffer[sample_count*6 + 3] = (buffer.sensor.y)>>8;
-  data_buffer[sample_count*6 + 4] = (buffer.sensor.y)&0xFF;
-  data_buffer[sample_count*6 + 5] = (buffer.sensor.z)>>8;
-  data_buffer[sample_count*6 + 6] = (buffer.sensor.z)&0xFF;
+  data_buffer[sample_count*6 + 0] = (buffer.sensor.x)>>8;
+  data_buffer[sample_count*6 + 1] = (buffer.sensor.x)&0xFF;
+  data_buffer[sample_count*6 + 2] = (buffer.sensor.y)>>8;
+  data_buffer[sample_count*6 + 3] = (buffer.sensor.y)&0xFF;
+  data_buffer[sample_count*6 + 4] = (buffer.sensor.z)>>8;
+  data_buffer[sample_count*6 + 5] = (buffer.sensor.z)&0xFF;
 
   sample_count++;
   
-  if (sample_count == 5)
+  if (sample_count == 4)
   {
-    data_buffer[0] = sample_count; //Check that submission is every 5 samples
+    //data_buffer[0] = sample_count; //Check that submission is every 5 samples
     updateAdvertisement();
     sample_count = 0;
   }

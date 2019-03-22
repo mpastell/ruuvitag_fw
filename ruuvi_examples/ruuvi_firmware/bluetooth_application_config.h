@@ -14,7 +14,7 @@
 
 // milliseconds until main loop timer function is called. Other timers can bring
 // application out of sleep at higher (or lower) interval.
-#define MAIN_LOOP_INTERVAL_RAW        200u
+#define MAIN_LOOP_INTERVAL_RAW        250u
 #define ADVERTISING_INTERVAL_RAW      1000u
 #define MAIN_LOOP_INTERVAL_RAW_SLOW   6010u
 #define ADVERTISING_INTERVAL_RAW_SLOW 6010u
@@ -22,8 +22,8 @@
 #define ADVERTISING_INTERVAL_STARTUP  100u  // Interval of startup advertising
 
 //Raw v2
-#define RAWv1_DATA_LENGTH 14
-#define RAWv2_DATA_LENGTH 31
+#define RAWv1_DATA_LENGTH 24
+#define RAWv2_DATA_LENGTH 24
 
 /**
  *  BLE_GAP_ADV_TYPE_ADV_IND          0x00   Connectable, scannable
