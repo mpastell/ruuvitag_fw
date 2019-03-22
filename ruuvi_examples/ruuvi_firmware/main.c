@@ -358,6 +358,10 @@ static void main_sensor_task(void* p_data, uint16_t length)
   uint32_t raw_h = 0;
   lis2dh12_sensor_buffer_t buffer;
   int32_t acc[3] = {0};
+  uint8_t lsbx;
+  uint8_t lsby;
+  uint8_t lsbz;
+
 
   if (fast_advertising && ((millis() - fast_advertising_start) > ADVERTISING_STARTUP_PERIOD))
   {
@@ -416,16 +420,18 @@ static void main_sensor_task(void* p_data, uint16_t length)
   //}
 
   //Write accelerometer data to buffer -> 5 samples fit to advertising data
-  data_buffer[sample_count*6 + 0] = (buffer.sensor.x)>>8;
-  data_buffer[sample_count*6 + 1] = (buffer.sensor.x)&0xFF;
-  data_buffer[sample_count*6 + 2] = (buffer.sensor.y)>>8;
-  data_buffer[sample_count*6 + 3] = (buffer.sensor.y)&0xFF;
-  data_buffer[sample_count*6 + 4] = (buffer.sensor.z)>>8;
-  data_buffer[sample_count*6 + 5] = (buffer.sensor.z)&0xFF;
+  //We need 8 bits from first byte and 2 first bits from second byte
+  data_buffer[sample_count*4 + 0] = (buffer.sensor.x)>> 8;
+  data_buffer[sample_count*4 + 1] = (buffer.sensor.y) >> 8;
+  data_buffer[sample_count*4 + 2] = (buffer.sensor.z) >> 8;
+  lsbx = (buffer.sensor.x) & 0b11000000;
+  lsby = ((buffer.sensor.y) & 0b11000000) >> 2;
+  lsbz = ((buffer.sensor.z) & 0b11000000) >> 4;
+  data_buffer[sample_count*4 + 3] = lsbx & lsby & lsbz;
 
   sample_count++;
   
-  if (sample_count == 4)
+  if (sample_count == 6)
   {
     //data_buffer[0] = sample_count; //Check that submission is every 5 samples
     updateAdvertisement();

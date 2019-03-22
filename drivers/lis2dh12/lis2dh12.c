@@ -298,11 +298,12 @@ lis2dh12_ret_t lis2dh12_read_samples(lis2dh12_sensor_buffer_t* buffer, size_t co
      NRF_LOG_DEBUG("Reading %d bytes \r\n", bytes_to_read);
      err_code |= lis2dh12_read_register(LIS2DH12_OUT_X_L, (uint8_t*)buffer, count*sizeof(lis2dh12_sensor_buffer_t));
      // Use constant bitshift, so we don't have to adjust mgpb with resolution
+     // Use constant bitshift, so we don't have to adjust mgpb with resolution
      for(int ii = 0; ii < count; ii++)
      {
-        buffer[ii].sensor.x = rawToMg(buffer[ii].sensor.x);
-        buffer[ii].sensor.y = rawToMg(buffer[ii].sensor.y);
-        buffer[ii].sensor.z = rawToMg(buffer[ii].sensor.z);
+        buffer[ii].sensor.x = buffer[ii].sensor.x; //rawToMg(buffer[ii].sensor.x);
+        buffer[ii].sensor.y = buffer[ii].sensor.y; //rawToMg(buffer[ii].sensor.y);
+        buffer[ii].sensor.z = buffer[ii].sensor.z; //rawToMg(buffer[ii].sensor.z);
      }
      return err_code;
 }
