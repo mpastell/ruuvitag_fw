@@ -14,10 +14,10 @@
 
 // milliseconds until main loop timer function is called. Other timers can bring
 // application out of sleep at higher (or lower) interval.
-#define MAIN_LOOP_INTERVAL_RAW        250u
+#define MAIN_LOOP_INTERVAL_RAW        166u
 #define ADVERTISING_INTERVAL_RAW      1000u
-#define MAIN_LOOP_INTERVAL_RAW_SLOW   6010u
-#define ADVERTISING_INTERVAL_RAW_SLOW 6010u
+#define MAIN_LOOP_INTERVAL_RAW_SLOW   166u
+#define ADVERTISING_INTERVAL_RAW_SLOW 1000u
 #define ADVERTISING_STARTUP_PERIOD    5000u // milliseconds app advertises at startup speed.
 #define ADVERTISING_INTERVAL_STARTUP  1000u  // Interval of startup advertising
 
