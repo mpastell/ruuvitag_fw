@@ -117,7 +117,7 @@ static uint8_t sample_count = 0; // Counter for sampling / advertising packet
 
 // Must be UINT32_T as flash storage operated in 4-byte chunks
 // Will get loaded from flash, this is default.
-static uint32_t tag_mode __attribute__ ((aligned (4))) = RAWv1;
+static uint32_t tag_mode __attribute__ ((aligned (4))) = RAWv2_FAST;
 // Rates of advertising. These must match the tag mode enum.
 static const uint16_t advertising_rates[] = {
   ADVERTISING_INTERVAL_RAW,
@@ -427,7 +427,7 @@ static void main_sensor_task(void* p_data, uint16_t length)
   lsbx = (buffer.sensor.x) & 0b11000000;
   lsby = ((buffer.sensor.y) & 0b11000000) >> 2;
   lsbz = ((buffer.sensor.z) & 0b11000000) >> 4;
-  data_buffer[sample_count*4 + 3] = lsbx & lsby & lsbz;
+  data_buffer[sample_count*4 + 3] = lsbx | lsby | lsbz;
 
   sample_count++;
   
